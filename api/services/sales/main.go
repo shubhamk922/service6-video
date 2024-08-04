@@ -10,6 +10,8 @@ import (
 	"example.com/service/foundation/logger"
 )
 
+var build = "develop"
+
 func main() {
 
 	var log *logger.Logger
@@ -36,7 +38,7 @@ func main() {
 }
 
 func run(ctx context.Context, log *logger.Logger) error {
-	log.Info(ctx, "startup", "GOMAXPROCS", runtime.GOMAXPROCS(0))
+	log.Info(ctx, "startup", "GOMAXPROCS", runtime.GOMAXPROCS(0), "build", build)
 	log.Info(ctx, "startup", "status", "initializing V1 API support")
 
 	shutdown := make(chan os.Signal, 1)
