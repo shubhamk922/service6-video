@@ -39,6 +39,12 @@ sales:
 run:
 	go run api/services/sales/main.go | go run api/tooling/logfmt/main.go
 
+help:
+	go run api/services/sales/main.go --help
+
+version:
+	go run api/services/sales/main.go --version
+
 
 ##################################################################################
 # Running from within k8s/kind
