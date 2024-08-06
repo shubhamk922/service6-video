@@ -16,19 +16,26 @@ type Handler func(ctx context.Context, w http.ResponseWriter, r *http.Request) e
 type App struct {
 	*http.ServeMux // My App is everything a mux is
 	shutdown       chan os.Signal
+	mw             []MidHandler
 }
 
-func NewApp(shutdown chan os.Signal) *App {
+func NewApp(shutdown chan os.Signal, mw ...MidHandler) *App {
 	return &App{
 		ServeMux: http.NewServeMux(),
 		shutdown: shutdown,
+		mw:       mw,
 	}
 }
 
-func (a *App) HandleFunc(pattern string, handle Handler) {
+func (a *App) HandleFunc(pattern string, handle Handler, mw ...MidHandler) {
+
+	handle = wrapMiddleware(mw, handle)
+	handle = wrapMiddleware(a.mw, handle)
 
 	h := func(w http.ResponseWriter, r *http.Request) {
 		// we can write any code that we want
+
+		// we cant do logging direct here as foundation packages are not allowed to do logging , so we need mniddleware logging
 
 		if err := handle(r.Context(), w, r); err != nil {
 			// error handling
