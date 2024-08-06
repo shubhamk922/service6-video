@@ -31,12 +31,12 @@ func GetValues(ctx context.Context) *Values {
 
 // GetTraceID returns the trace id from the context.
 func GetTraceID(ctx context.Context) string {
-	v, ok := ctx.Value(key).(string)
+	v, ok := ctx.Value(key).(*Values)
 	if !ok {
 		return "00000000-0000-0000-0000-000000000000"
 	}
 
-	return v
+	return v.TraceID
 }
 
 func setStatusCode(ctx context.Context, statusCode int) {
