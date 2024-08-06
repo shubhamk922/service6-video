@@ -112,3 +112,6 @@ tidy:
 	go mod tidy
 	go mod vendor
 
+curl-test:
+	curl -il -X GET http://localhost:3000/test
+
