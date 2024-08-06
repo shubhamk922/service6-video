@@ -1,8 +1,9 @@
 package mux
 
 import (
-	"encoding/json"
 	"net/http"
+
+	"example.com/service/api/services/sales/route/sys/checkapi"
 )
 
 // WebAPI constructs a http.Handler with all application routes bound.
@@ -11,18 +12,7 @@ func WebAPI() *http.ServeMux {
 
 	mux := http.NewServeMux()
 
-	h := func(w http.ResponseWriter, r *http.Request) {
+	checkapi.Routes(mux)
 
-		status := struct {
-			Status string
-		}{
-			Status: "OK",
-		}
-
-		json.NewEncoder(w).Encode(status)
-
-	}
-
-	mux.HandleFunc("GET /test", h)
 	return mux
 }
