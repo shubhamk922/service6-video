@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
+
+	"github.com/google/uuid"
 )
 
 // this is a type of Handler that we want to use
@@ -36,8 +39,14 @@ func (a *App) HandleFunc(pattern string, handle Handler, mw ...MidHandler) {
 		// we can write any code that we want
 
 		// we cant do logging direct here as foundation packages are not allowed to do logging , so we need mniddleware logging
+		v := Values{
+			Now:     time.Now(),
+			TraceID: uuid.NewString(),
+		}
 
-		if err := handle(r.Context(), w, r); err != nil {
+		ctx := setValues(r.Context(), &v)
+
+		if err := handle(ctx, w, r); err != nil {
 			// error handling
 			fmt.Println(err)
 			return

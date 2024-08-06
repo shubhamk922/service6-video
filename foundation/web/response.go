@@ -17,7 +17,7 @@ func Respond(ctx context.Context, w http.ResponseWriter, data any, statusCode in
 	// If the context has been canceled, it means the client is no longer
 	// waiting for a response.
 
-	//setStatusCode(ctx, statusCode)
+	setStatusCode(ctx, statusCode)
 
 	if statusCode == http.StatusNoContent {
 		w.WriteHeader(statusCode)

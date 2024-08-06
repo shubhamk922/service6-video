@@ -3,8 +3,8 @@ package mux
 import (
 	"os"
 
+	"example.com/service/api/services/api/mid"
 	"example.com/service/api/services/sales/route/sys/checkapi"
-	"example.com/service/app/api/mid"
 	"example.com/service/foundation/logger"
 	"example.com/service/foundation/web"
 )

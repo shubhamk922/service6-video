@@ -15,6 +15,7 @@ import (
 	"example.com/service/api/services/api/debug"
 	"example.com/service/api/services/sales/mux"
 	"example.com/service/foundation/logger"
+	"example.com/service/foundation/web"
 	"github.com/ardanlabs/conf/v3"
 )
 
@@ -31,7 +32,7 @@ func main() {
 	}
 
 	traceIDFn := func(ctx context.Context) string {
-		return ""
+		return web.GetTraceID(ctx)
 	}
 
 	log = logger.NewWithEvents(os.Stdout, logger.LevelInfo, "SALES", traceIDFn, events)
