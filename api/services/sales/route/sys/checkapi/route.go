@@ -5,8 +5,8 @@ import (
 )
 
 func Routes(mux *web.App) {
-	mux.HandleFunc("GET /liveness", liveness)
-	mux.HandleFunc("GET /readiness", readiness)
+	mux.HandleFuncNoMiddleware("GET /liveness", liveness)
+	mux.HandleFuncNoMiddleware("GET /readiness", readiness)
 	mux.HandleFunc("GET /testerror", testError)
 	mux.HandleFunc("GET /testpanic", testPanic)
 

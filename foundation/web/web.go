@@ -67,6 +67,37 @@ func (a *App) HandleFunc(pattern string, handle Handler, mw ...MidHandler) {
 
 }
 
+func (a *App) HandleFuncNoMiddleware(pattern string, handle Handler, mw ...MidHandler) {
+
+	
+
+	h := func(w http.ResponseWriter, r *http.Request) {
+		// we can write any code that we want
+
+		// we cant do logging direct here as foundation packages are not allowed to do logging , so we need mniddleware logging
+		v := Values{
+			Now:     time.Now(),
+			TraceID: uuid.NewString(),
+		}
+
+		ctx := setValues(r.Context(), &v)
+
+		if err := handle(ctx, w, r); err != nil {
+			// error handling
+			// This will be the end of food chain , from here it goes back to mux , hence any sort of error need to be handle error and return nil
+			if validateError(err) {
+				// Server got restart
+				a.SignalShutdown()
+				return
+			}
+			return
+		}
+	}
+
+	a.ServeMux.HandleFunc(pattern, h)
+
+}
+
 func validateError(err error) bool {
 
 	// Ignore syscall.EPIPE and syscall.ECONNRESET errors which occurs
