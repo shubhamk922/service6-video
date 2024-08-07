@@ -121,4 +121,9 @@ curl-live:
 curl-ready:
 	curl -il -X GET http://localhost:3000/readiness
 
+curl-error:
+	curl -il -X GET http://localhost:3000/testerror
+
+
+
 
