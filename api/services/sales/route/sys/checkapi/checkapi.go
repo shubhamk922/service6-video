@@ -44,3 +44,17 @@ func testError(ctx context.Context, w http.ResponseWriter, _ *http.Request) erro
 
 	return web.Respond(ctx, w, status, http.StatusOK) // what is we dont need to use json then , we nedd code to prepare respoonse
 }
+
+func testPanic(ctx context.Context, w http.ResponseWriter, _ *http.Request) error {
+
+	if n := rand.Intn(100); n%2 == 0 {
+		panic("We are panicking")
+	}
+	status := struct {
+		Status string
+	}{
+		Status: "OK",
+	}
+
+	return web.Respond(ctx, w, status, http.StatusOK) // what is we dont need to use json then , we nedd code to prepare respoonse
+}
