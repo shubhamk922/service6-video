@@ -143,6 +143,11 @@ curl-panic:
 admin:
 	go run api/tooling/admin/main.go
 
+#################################################################333
+
+pgcli:
+	pgcli postgresql://postgres:postgres@localhost
+
 
 
 
