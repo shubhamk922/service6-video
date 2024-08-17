@@ -36,7 +36,7 @@ AUTH_IMAGE      := $(BASE_IMAGE_NAME)/$(AUTH_APP):$(VERSION)
 
 build: sales
 sales:
-	docker build \
+	docker build --no-cache \
 		-f zarf/docker/dockerfile.sales \
 		-t $(SALES_IMAGE) \
 		--build-arg BUILD_REF=$(VERSION) \
@@ -142,6 +142,9 @@ curl-panic:
 
 admin:
 	go run api/tooling/admin/main.go
+
+dev-logs-init:
+	kubectl logs --namespace=$(NAMESPACE) -l app=$(SALES_APP) -f --tail=100 -c init-migrate-seed
 
 #################################################################333
 

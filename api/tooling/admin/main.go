@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
@@ -10,15 +11,52 @@ import (
 	"os"
 	"time"
 
+	"example.com/service/business/data/migrate"
+	"example.com/service/business/data/sqldb"
 	"github.com/golang-jwt/jwt/v4"
 )
 
 func main() {
 
-	if err := GenToken(); err != nil {
+	if err := Migrate(); err != nil {
 		log.Fatal(err)
 	}
 
+}
+
+func Migrate() error {
+
+	fmt.Println("migrations start 123")
+
+	dbConfig := sqldb.Config{
+		User:         "postgres",
+		Password:     "postgres",
+		Host:         "database-service.sales-system.svc.cluster.local",
+		Name:         "postgres",
+		MaxIdleConns: 5,
+		MaxOpenConns: 5,
+		DisableTLS:   true,
+	}
+	db, err := sqldb.Open(dbConfig)
+	if err != nil {
+		return fmt.Errorf("connect database: %w", err)
+	}
+	defer db.Close()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	/*if err := migrate.Migrate(ctx, db); err != nil {
+		return fmt.Errorf("migrate database: %w", err)
+	}
+
+	if err := migrate.Seed(ctx, db); err != nil {
+		x := fmt.Errorf("seed database: %w", err)
+		return x
+	}
+
+	fmt.Println("seed data complete")
+	return nil
 }
 
 func GenToken() error {
